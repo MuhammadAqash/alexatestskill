@@ -8,7 +8,7 @@ var app = new alexa.app( 'test-skill' );
 
 // THIS FUNCTION RUNS WHEN THE SKILL IS INVOKED
 app.launch( function( request, response ) {
-	response.say( 'Ready to take notes' );	// initial response from alexa
+	response.say( 'Ready to note a topic name' );	// initial response from alexa
 	response.reprompt( 'I am waiting for instructions' )	// this message is heard if alexa did not hear anything from user
 	response.shouldEndSession(false);
 } );
@@ -24,33 +24,32 @@ app.error = function( exception, request, response ) {
 // TO FIND OUT WHEN THE SESSION ENDS
 app.sessionEnded(function(request, response) 
 {
-	response.say("Minute Taker is closing");
+	response.say("Topic is closing");
 	console.log("session ended");
 });
 
 
 
 // NOTE TAKING INTENT
-app.intent('noteTake',
+app.intent('topic',
   {
-    "slots":{"note":"AMAZON.Actor"}
+    "slots":{"topic":"AMAZON.Actor"}
 	,"utterances":[ 
-		"meeting decision {note}",
-		"take a decision {note}",
-		"write down a decision {note}",
-		"note that {note}"
+		"Create topic {topic}",
+                "Select topic {topic}",
+                "Add topic {topic}"
 		]
   },
   function(request,response) 
   {
-    var note = request.slot('note');
-	if (typeof(note) != "undefined")
+    var topic = request.slot('topic');
+	if (typeof(topic) != "undefined")
 	{
-		response.say("Your note: " + note + " was created.");
+		response.say("Your topic: " + topic + " was created.");
 	}
 	else
 	{
-		response.say("Pardon me. I could not hear a note.");
+		response.say("Pardon me. I could not hear a topic.");
 	}
 	
 	// todo: connect to database and send entry
